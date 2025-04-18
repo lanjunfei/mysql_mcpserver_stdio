@@ -11,6 +11,6 @@ for row in rows:
     content.append("设备账号: " + row['username'])  
     content.append("IPv4地址: " + row['user_ip4'])  
     content.append("MAC地址: " + row['user_mac'].replace(":", "-"))  
-注意对齐。  
+注意对齐，content前面有四个空格。  
 生成的server文件可以先用MCP Inspector测试一下，看看工具调用是否正常。  
 mcp client就直接用现成的工具。推荐用cherrystudio,比较方便。  
