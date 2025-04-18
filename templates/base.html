@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title or "MCP Gen" }}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container py-4">
+    <h1 class="mb-4">MCP Server 生成平台</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for msg in messages %}
+        <div class="alert alert-info">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>
