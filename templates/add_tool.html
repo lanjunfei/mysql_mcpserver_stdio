@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2 class="mb-4">为 {{ selected }} 添加新工具</h2>
+
+  <!-- 返回初始化页面按钮 -->
+  <div class="mb-3">
+    <a href="{{ url_for('init_server') }}" class="btn btn-secondary">← 返回初始化页面</a>
+  </div>
+
+  <!-- 已存在的工具列表及删除操作 -->
+  {% if existing_tools %}
+    <div class="mb-3">
+      <strong>已存在工具：</strong>
+      {% for tool in existing_tools %}
+        <span class="badge bg-secondary">{{ tool }}</span>
+        <!-- 删除按钮 -->
+        <form method="post" action="{{ url_for('delete_tool') }}" style="display:inline">
+          <input type="hidden" name="server_file" value="{{ selected }}">
+          <input type="hidden" name="func_name" value="{{ tool }}">
+          <button type="submit" class="btn btn-sm btn-outline-danger ms-1">删除</button>
+        </form>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="mb-3">
+      <em>当前无已生成工具</em>
+    </div>
+  {% endif %}
+
+  <!-- 选择 Server 文件（切换时刷新已有工具列表） -->
+  <div class="mb-3">
+    <label class="form-label">选择 Server 文件</label>
+    <select name="server_file" class="form-select" required onchange="window.location.href='?server_file='+this.value">
+      {% for f in files %}
+        <option value="{{ f }}" {% if f == selected %}selected{% endif %}>{{ f }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <hr>
+
+  <!-- 新工具函数表单 -->
+  <form method="post">
+    <input type="hidden" name="server_file" value="{{ selected }}">
+
+    <div class="mb-3">
+      <label class="form-label">工具函数名</label>
+      <input name="func_name" class="form-control" placeholder="snake_case" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">工具说明</label>
+      <input name="desc" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">SQL 语句 (使用 %s 占位符)</label>
+      <textarea name="sql" class="form-control" rows="8" style="width:60%;" required></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">测试参数 (逗号分隔，可留空)</label>
+      <input name="test_params" class="form-control" placeholder="val1,val2">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">输出格式 (可选 Python 代码片段)</label>
+      <textarea name="format_code" class="form-control" rows="10" style="width:60%;" placeholder="for row in rows:\n    content.append('设备账号: ' + row['username'])\n    ..."></textarea>
+      <div class="form-text">留空则返回原始 rows 列表。</div>
+    </div>
+
+    <button type="submit" class="btn btn-success">添加工具</button>
+  </form>
+{% endblock %}

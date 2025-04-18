@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2 class="mb-4">初始化 MCP Server</h2>
+
+  <!-- 操作成功后显示 -->
+  {% if outfile %}
+    <div class="alert alert-success">
+      已生成 MCP Server 文件：<code>{{ outfile }}</code><br>
+      已生成工具：{{ tools | join(', ') }}
+    </div>
+    <a href="{{ url_for('add_tool') }}" class="btn btn-primary mb-4">
+      新增工具函数 →
+    </a>
+  {% endif %}
+
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">输出文件名 <span class="text-danger">*</span></label>
+      <input
+        name="outfile"
+        class="form-control"
+        placeholder="e.g. server1.py (必须以 .py 结尾)"
+        pattern=".*/.*\.py$|^.*\.py$"
+        title="文件名必须以 .py 结尾"
+        required>
+      <div class="form-text text-muted">
+        请务必输入以 <code>.py</code> 结尾的文件名。
+      </div>
+    </div>
+
+    <div class="mb-3 row">
+      <div class="col">
+        <label class="form-label">MySQL Host</label>
+        <input name="host" class="form-control" value="127.0.0.1" required>
+      </div>
+      <div class="col">
+        <label class="form-label">Port</label>
+        <input name="port" type="number" class="form-control" value="3306" required>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <div class="col">
+        <label class="form-label">User</label>
+        <input name="user" class="form-control" value="root" required>
+      </div>
+      <div class="col">
+        <label class="form-label">Password</label>
+        <input name="password" type="password" class="form-control">
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Database</label>
+      <input name="database" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">服务描述 (可选)</label>
+      <input name="desc" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-primary">生成 MCP Server</button>
+  </form>
+{% endblock %}
